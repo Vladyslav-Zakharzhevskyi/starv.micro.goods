@@ -1,0 +1,12 @@
+services:
+  postgres:
+    container_name: 'postgres'
+    image: 'postgres:15.3'
+    environment:
+      POSTGRES_DB: goods
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    env_file:
+      - .env
+    ports:
+      - 5423:5432

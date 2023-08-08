@@ -1,0 +1,28 @@
+eureka:
+  client:
+    fetch-registry: false
+server:
+  port: 8761
+spring:
+  application:
+    name: starv.micro.goods
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  sql:
+    init:
+      schema-locations: classpath:db/schema.sql
+      data-locations: classpath:db/data.sql
+      mode: always
+management:
+  info:
+    env:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+
+
+
