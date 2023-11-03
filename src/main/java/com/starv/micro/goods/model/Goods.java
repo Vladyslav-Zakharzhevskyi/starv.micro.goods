@@ -1,31 +1,28 @@
 package com.starv.micro.goods.model;
 
-import jakarta.persistence.*;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
+import org.springframework.data.annotation.Id;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Entity
-@Inheritance
-public class Goods extends BaseEntity {
+public class Goods {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "description", nullable = false)
     private String description;
 
-    @Column(name = "sku", nullable = false)
     private String sku;
 
-    @Column(name = "internalId", nullable = false)
     private UUID internalId;
+
+    private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
+
+    public Goods() {}
 
     public Long getId() {
         return id;
@@ -65,5 +62,21 @@ public class Goods extends BaseEntity {
 
     public void setInternalId(UUID internalId) {
         this.internalId = internalId;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

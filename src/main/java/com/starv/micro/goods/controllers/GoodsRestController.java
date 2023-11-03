@@ -7,8 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
+import reactor.core.publisher.Flux;
 
 @RestController
 @RequestMapping("/api/v1/")
@@ -18,7 +17,7 @@ public class GoodsRestController {
     private IGoodsService service;
 
     @RequestMapping(method = RequestMethod.GET, path = "goods")
-    public List<GoodsDTO> getGoods() throws JsonProcessingException {
+    public Flux<GoodsDTO> getGoods() throws JsonProcessingException {
         return service.getGoods();
     }
 

@@ -6,9 +6,10 @@ server:
 spring:
   application:
     name: starv.micro.goods
-  jpa:
-    hibernate:
-      ddl-auto: validate
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5423/goods
+    username: root
+    password: root
   sql:
     init:
       schema-locations: classpath:db/schema.sql
@@ -22,6 +23,12 @@ management:
     web:
       exposure:
         include: '*'
+
+
+
+
+
+
 
 
 

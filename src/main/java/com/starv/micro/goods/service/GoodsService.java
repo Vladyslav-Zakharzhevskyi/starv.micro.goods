@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 
 import java.util.List;
 
@@ -29,21 +30,19 @@ public class GoodsService implements IGoodsService {
 
 
     @Override
-    public List<GoodsDTO> getGoods() {
-        List<Goods> goods = repository.findAll();
+    public Flux<GoodsDTO> getGoods() {
+        Flux<Goods> found = repository.findAll();
 
-        List<GoodsDTO> goodsDTOS = goods
-                .stream()
-                .map(i -> mapper.goodsToGoodsDto(i))
-                .toList();
+        Flux<GoodsDTO> dto = found
+                .map(i -> mapper.goodsToGoodsDto(i));
 
 
-        List<ProductAvailability> availability = getWithEureka.productsAvailability();
+//        List<ProductAvailability> availability = getWithEureka.productsAvailability();
+//
+//        availability
+//                .forEach(a -> provideWithAvailability(dto, a));
 
-        availability
-                .forEach(a -> provideWithAvailability(goodsDTOS, a));
-
-        return goodsDTOS;
+        return dto;
     }
 
     public void provideWithAvailability(List<GoodsDTO> goods, ProductAvailability avail) {
