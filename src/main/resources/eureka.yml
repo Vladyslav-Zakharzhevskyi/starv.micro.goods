@@ -1,0 +1,6 @@
+eureka:
+  dashboard:
+    path: /eureka-dashboard
+  client:
+    fetch-registry: false
+    register-with-eureka: false

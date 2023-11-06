@@ -1,10 +1,10 @@
 package com.starv.micro.goods;
 
+import com.starv.micro.goods.conf.ann.EurekaServer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
 
-@EnableEurekaServer
+@EurekaServer
 @SpringBootApplication
 public class GoodsApplication {
 

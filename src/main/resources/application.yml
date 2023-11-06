@@ -1,28 +1,19 @@
-eureka:
-  client:
-    fetch-registry: false
 server:
-  port: 8761
+  port: 8080
 spring:
   application:
     name: starv.micro.goods
   r2dbc:
     url: r2dbc:postgresql://localhost:5423/goods
-    username: root
-    password: root
+    username: ${POSTGRES_USER:root}
+    password: ${POSTGRES_PASSWORD:root}
   sql:
     init:
       schema-locations: classpath:db/schema.sql
       data-locations: classpath:db/data.sql
       mode: always
-management:
-  info:
-    env:
-      enabled: true
-  endpoints:
-    web:
-      exposure:
-        include: '*'
+  config:
+    import: classpath:eureka.yml, classpath:actuator.yml
 
 
 

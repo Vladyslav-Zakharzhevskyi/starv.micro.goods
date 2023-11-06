@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 
 @RestController
-@RequestMapping("/api/v1/")
+@RequestMapping("/api")
 public class GoodsRestController {
 
     @Autowired
     private IGoodsService service;
 
-    @RequestMapping(method = RequestMethod.GET, path = "goods")
+    @RequestMapping(method = RequestMethod.GET, path = "/goods")
     public Flux<GoodsDTO> getGoods() throws JsonProcessingException {
         return service.getGoods();
     }
