@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class GoodsService implements IGoodsService {
@@ -33,34 +34,25 @@ public class GoodsService implements IGoodsService {
     public Flux<GoodsDTO> getGoods() {
         Flux<Goods> found = repository.findAll();
 
-        Flux<GoodsDTO> dto = found
+        Flux<GoodsDTO> flux = found
                 .map(i -> mapper.goodsToGoodsDto(i));
 
 
-//        List<ProductAvailability> availability = getWithEureka.productsAvailability();
-//
-//        availability
-//                .forEach(a -> provideWithAvailability(dto, a));
+        List<ProductAvailability> resource = getWithEureka.productsAvailability();
 
-        return dto;
+        flux.doOnNext(goodsDTO -> findAvailability(goodsDTO, resource));
+
+        return flux;
     }
 
-    public void provideWithAvailability(List<GoodsDTO> goods, ProductAvailability avail) {
-        List<GoodsDTO> genSku = goods
+    private void findAvailability(GoodsDTO goods, List<ProductAvailability> resource) {
+        final String sku = goods.getSku();
+        resource
                 .stream()
-                .filter(item -> item.getSku().equals(avail.sku()))
-                .toList();
-
-        if (genSku.size() > 1) {
-            log.error("Found different goods with the same SKU");
-        }
-
-        genSku.forEach(item -> provideWithAvailability(item, avail));
-    }
-
-
-    private void provideWithAvailability(GoodsDTO product, ProductAvailability avail) {
-        product.setAvailableCount(avail.availableCount());
+                .filter(productAvailability -> productAvailability.sku().equals(sku))
+                .findFirst()
+                .map(ProductAvailability::availableCount)
+                .ifPresent(goods::setAvailableCount);
     }
 
 }

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.netflix.appinfo.InstanceInfo;
 import com.netflix.discovery.shared.Application;
-import com.netflix.eureka.registry.PeerAwareInstanceRegistry;
+import com.netflix.eureka.registry.InstanceRegistry;
 import com.starv.micro.goods.eco.Architecture;
 import com.starv.micro.goods.mapper.jackson.ProductAvailability;
 import com.starv.micro.goods.mapper.jackson.Root;
@@ -18,7 +18,7 @@ import java.util.List;
 public class GetWithEurekaImpl implements GetWithEureka {
 
     @Autowired
-    private PeerAwareInstanceRegistry registry;
+    private InstanceRegistry registry;
 
     @Autowired
     private ObjectMapper objectMapper;

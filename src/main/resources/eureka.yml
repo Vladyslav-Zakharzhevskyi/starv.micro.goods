@@ -1,6 +1,13 @@
 eureka:
+  instance:
+    statusPageUrl: http://${eureka.instance.hostname}:${server.port}/info
+    healthCheckUrl: http://${eureka.instance.hostname}:${server.port}/health
+    homePageUrl: http://${eureka.instance.hostname}:${server.port}/
+    hostname: localhost
   dashboard:
     path: /eureka-dashboard
   client:
     fetch-registry: false
     register-with-eureka: false
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
