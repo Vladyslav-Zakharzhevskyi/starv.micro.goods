@@ -1,13 +1,15 @@
 package com.starv.micro.goods.dto;
 
+import java.util.UUID;
+
 public class GoodsDTO {
-    private Long id;
+    private UUID id;
     private String name;
     private String description;
     private String sku;
     private Long availableCount;
 
-    public GoodsDTO(Long id, String name, String description, String sku, Long availableCount) {
+    public GoodsDTO(UUID id, String name, String description, String sku, Long availableCount) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -15,11 +17,11 @@ public class GoodsDTO {
         this.availableCount = availableCount;
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

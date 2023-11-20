@@ -1,12 +1,42 @@
 services:
-  postgres:
-    container_name: 'postgres'
-    image: 'postgres:15.3'
+  cassandra_0:
+    container_name: 'cassandra-node0'
+    image: 'cassandra:4.1.3'
     environment:
-      POSTGRES_DB: goods
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-    env_file:
-      - .env
+      CASSANDRA_SEEDS: 'cassandra-node1, cassandra-node2'
+      CASSANDRA_CLUSTER_NAME: 'db_cluster'
+      CASSANDRA_BROADCAST_RPC_ADDRESS: '127.0.0.1'
+    volumes:
+      - /etc/docker-volumes/cassandra:/var/lib/cassandra
+    user: 'cassandra'
     ports:
-      - 5423:5432
+      - 7010:7000
+      - 9042:9042
+    networks:
+      - cassandra
+  cassandra_1:
+    container_name: 'cassandra-node1'
+    image: 'cassandra:4.1.3'
+    environment:
+      CASSANDRA_SEEDS: 'cassandra-node0, cassandra-node2'
+      CASSANDRA_CLUSTER_NAME: 'db_cluster'
+    ports:
+      - 7011:7000
+      - 9053:9042
+    networks:
+      - cassandra
+  cassandra_2:
+    container_name: 'cassandra-node2'
+    image: 'cassandra:4.1.3'
+    environment:
+      CASSANDRA_SEEDS: 'cassandra-node0, cassandra-node1'
+      CASSANDRA_CLUSTER_NAME: 'db_cluster'
+    ports:
+      - 7012:7000
+      - 9054:9042
+    networks:
+      - cassandra
+networks:
+  cassandra:
+    name: cassandra_network
+    driver: bridge

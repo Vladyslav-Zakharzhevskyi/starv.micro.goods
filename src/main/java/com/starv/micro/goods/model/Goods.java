@@ -1,14 +1,16 @@
 package com.starv.micro.goods.model;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.cassandra.core.mapping.Table;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@Table("goods")
 public class Goods {
 
     @Id
-    private Long id;
+    private UUID id;
 
     private String name;
 
@@ -24,11 +26,11 @@ public class Goods {
 
     public Goods() {}
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

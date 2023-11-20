@@ -3,15 +3,8 @@ server:
 spring:
   application:
     name: starv.micro.goods
-  r2dbc:
-    url: r2dbc:postgresql://localhost:5423/goods
-    username: ${POSTGRES_USER:root}
-    password: ${POSTGRES_PASSWORD:root}
-  sql:
-    init:
-      schema-locations: classpath:db/schema.sql
-      data-locations: classpath:db/data.sql
-      mode: always
+  cassandra:
+    keyspace-name: 'app'
   config:
     import: classpath:eureka.yml, classpath:actuator.yml
 

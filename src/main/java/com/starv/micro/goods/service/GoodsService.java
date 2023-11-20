@@ -38,9 +38,9 @@ public class GoodsService implements IGoodsService {
                 .map(i -> mapper.goodsToGoodsDto(i));
 
 
-        List<ProductAvailability> resource = getWithEureka.productsAvailability();
-
-        flux.doOnNext(goodsDTO -> findAvailability(goodsDTO, resource));
+//        List<ProductAvailability> resource = getWithEureka.productsAvailability();
+//
+//        flux.doOnNext(goodsDTO -> findAvailability(goodsDTO, resource));
 
         return flux;
     }
