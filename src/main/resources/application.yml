@@ -4,7 +4,7 @@ spring:
   application:
     name: starv.micro.goods
   cassandra:
-    keyspace-name: 'app'
+    keyspace-name: '"APP"'
   config:
     import: classpath:eureka.yml, classpath:actuator.yml
 

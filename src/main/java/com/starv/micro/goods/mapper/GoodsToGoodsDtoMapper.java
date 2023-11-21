@@ -9,4 +9,6 @@ import org.springframework.stereotype.Component;
 @Mapper(componentModel = "spring")
 public interface GoodsToGoodsDtoMapper {
     GoodsDTO goodsToGoodsDto(Goods goods);
+
+    Goods goodsDtoToGoods(GoodsDTO dto);
 }

@@ -11,9 +11,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class GoodsService implements IGoodsService {
@@ -43,6 +43,13 @@ public class GoodsService implements IGoodsService {
 //        flux.doOnNext(goodsDTO -> findAvailability(goodsDTO, resource));
 
         return flux;
+    }
+
+    @Override
+    public Mono<GoodsDTO> createGood(GoodsDTO dto) {
+        Goods goods = mapper.goodsDtoToGoods(dto);
+        Mono<Goods> saved = repository.save(goods);
+        return saved.map(s -> mapper.goodsToGoodsDto(s));
     }
 
     private void findAvailability(GoodsDTO goods, List<ProductAvailability> resource) {

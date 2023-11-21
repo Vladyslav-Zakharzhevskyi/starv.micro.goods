@@ -1,6 +1,7 @@
 package com.starv.micro.goods.model;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.cassandra.core.mapping.Column;
 import org.springframework.data.cassandra.core.mapping.Table;
 
 import java.time.LocalDateTime;
@@ -10,18 +11,25 @@ import java.util.UUID;
 public class Goods {
 
     @Id
+    @Column("id")
     private UUID id;
 
+    @Column("name")
     private String name;
 
+    @Column("description")
     private String description;
 
+    @Column("sku")
     private String sku;
 
+    @Column("internal_id")
     private UUID internalId;
 
+    @Column("created_at")
     private LocalDateTime createdAt;
 
+    @Column("updated_at")
     private LocalDateTime updatedAt;
 
     public Goods() {}

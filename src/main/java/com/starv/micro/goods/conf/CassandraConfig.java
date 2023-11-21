@@ -33,7 +33,7 @@ public class CassandraConfig {
     @Bean
     public ReactiveCqlTemplate createReactiveCqlTemplate(ReactiveSessionFactory sessionFactory) {
         ReactiveCqlTemplate template = new ReactiveCqlTemplate(sessionFactory);
-        template.setConsistencyLevel(ConsistencyLevel.QUORUM);
+        template.setConsistencyLevel(ConsistencyLevel.ALL);
         return template;
     }
 
