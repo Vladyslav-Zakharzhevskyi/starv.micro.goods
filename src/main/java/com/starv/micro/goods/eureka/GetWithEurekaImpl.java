@@ -27,8 +27,11 @@ public class GetWithEurekaImpl implements GetWithEureka {
     private RestTemplate restTemplate;
 
     @Override
-    public List<ProductAvailability> productsAvailability() {
+    public List<ProductAvailability> productsAvailability() /*throws ServiceIsNotAvailableException*/ {
         Application application = registry.getApplication(Architecture.AVAILABILITY_SERVICE);
+        /*if (application == null) {
+            throw new ServiceIsNotAvailableException(Architecture.AVAILABILITY_SERVICE);
+        }*/
         application.shuffleAndStoreInstances(true);
         InstanceInfo instanceInfo = application.getInstances().get(0);
 

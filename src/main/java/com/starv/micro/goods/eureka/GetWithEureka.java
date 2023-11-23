@@ -1,5 +1,6 @@
 package com.starv.micro.goods.eureka;
 
+import com.starv.micro.goods.eureka.exception.ServiceIsNotAvailableException;
 import com.starv.micro.goods.mapper.jackson.ProductAvailability;
 
 import java.util.List;

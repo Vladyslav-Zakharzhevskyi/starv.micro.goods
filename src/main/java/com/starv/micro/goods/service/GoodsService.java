@@ -14,6 +14,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class GoodsService implements IGoodsService {
@@ -34,15 +35,19 @@ public class GoodsService implements IGoodsService {
     public Flux<GoodsDTO> getGoods() {
         Flux<Goods> found = repository.findAll();
 
+        List<ProductAvailability> availabilityData = getWithEureka.productsAvailability();
+
         Flux<GoodsDTO> flux = found
-                .map(i -> mapper.goodsToGoodsDto(i));
-
-
-//        List<ProductAvailability> resource = getWithEureka.productsAvailability();
-//
-//        flux.doOnNext(goodsDTO -> findAvailability(goodsDTO, resource));
+                .map(goods -> mapper.goodsToGoodsDto(goods))
+                .doOnNext(goodsDTO -> determine(goodsDTO, availabilityData));
 
         return flux;
+    }
+
+    private void determine(GoodsDTO dto, List<ProductAvailability> availabiliyData) {
+        final String sku = dto.getSku();
+        final Long availability = findAvailability(sku, availabiliyData);
+        dto.setAvailableCount(availability);
     }
 
     @Override
@@ -52,14 +57,14 @@ public class GoodsService implements IGoodsService {
         return saved.map(s -> mapper.goodsToGoodsDto(s));
     }
 
-    private void findAvailability(GoodsDTO goods, List<ProductAvailability> resource) {
-        final String sku = goods.getSku();
-        resource
-                .stream()
-                .filter(productAvailability -> productAvailability.sku().equals(sku))
-                .findFirst()
+    private Long findAvailability(String sku, List<ProductAvailability> resource) {
+        final Optional<ProductAvailability> availability = resource.stream()
+                .filter(pa -> pa.sku().equals(sku))
+                .findFirst();
+
+        return availability
                 .map(ProductAvailability::availableCount)
-                .ifPresent(goods::setAvailableCount);
+                .orElse(0L);
     }
 
 }
