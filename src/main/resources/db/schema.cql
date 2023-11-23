@@ -6,8 +6,7 @@ CREATE TABLE IF NOT EXISTS "APP".goods (
     id uuid,
     name varchar,
     description varchar,
-    internal_id uuid,
-    sku int,
+    sku varchar,
     created_at timeuuid,
     updated_at timeuuid,
   PRIMARY KEY ((id))
