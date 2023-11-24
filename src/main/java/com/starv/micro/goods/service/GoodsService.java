@@ -1,11 +1,14 @@
 package com.starv.micro.goods.service;
 
+import com.netflix.appinfo.InstanceInfo;
 import com.starv.micro.goods.dto.GoodsDTO;
-import com.starv.micro.goods.eureka.GetWithEureka;
+import com.starv.micro.goods.eureka.Eureka;
+import com.starv.micro.goods.eureka.MicroServicesInfo;
 import com.starv.micro.goods.mapper.GoodsToGoodsDtoMapper;
 import com.starv.micro.goods.mapper.jackson.ProductAvailability;
 import com.starv.micro.goods.model.Goods;
 import com.starv.micro.goods.repository.GoodsRepository;
+import com.starv.micro.goods.rest.IRestService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,20 +31,24 @@ public class GoodsService implements IGoodsService {
     private GoodsToGoodsDtoMapper mapper;
 
     @Autowired
-    private GetWithEureka getWithEureka;
+    private Eureka eureka;
+
+    @Autowired
+    private IRestService restService;
 
 
     @Override
     public Flux<GoodsDTO> getGoods() {
-        Flux<Goods> found = repository.findAll();
+        Flux<Goods> goods = repository.findAll();
 
-        List<ProductAvailability> availabilityData = getWithEureka.productsAvailability();
+        InstanceInfo instanceInfo = eureka.getShuffledInstanceInfo(MicroServicesInfo.AVAILABILITY_SERVICE_NAME);
+        List<ProductAvailability> availabilityData = restService.productsAvailability(instanceInfo);
 
-        Flux<GoodsDTO> flux = found
-                .map(goods -> mapper.goodsToGoodsDto(goods))
+        Flux<GoodsDTO> goodsWithAvailability = goods
+                .map(g -> mapper.goodsToGoodsDto(g))
                 .doOnNext(goodsDTO -> determine(goodsDTO, availabilityData));
 
-        return flux;
+        return goodsWithAvailability;
     }
 
     private void determine(GoodsDTO dto, List<ProductAvailability> availabiliyData) {
